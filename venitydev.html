@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>helios v.6</title>
+    <!-- Add the favicon -->
+    <link rel="icon" href="https://media.discordapp.net/attachments/1299797627910619211/1335379222666936330/vector-illustration-orange-flame-icon-white-background-vector-orange-flame-icon-131174241-removebg-preview.png?ex=679ff450&is=679ea2d0&hm=1d19c33d01de6a69a17d3d6cddff312be26efe8bbc9e20dd221e0b2cce46f5fa&=&format=webp&quality=lossless" type="image/png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        
+        body {
+            background-color: #080808;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            pointer-events: auto; /* Keep pointer events enabled */
+            user-select: none; /* Prevent text selection */
+        }
+        .header {
+            position: absolute;
+            top: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .sub-header {
+            position: absolute;
+            top: 50px;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        .button-container {
+            position: absolute;
+            top: 90px;
+            text-align: center; /* Center text */
+        }
+        .button {
+            background-color: #121212;
+            color: white;
+            font-size: 20px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+            transition: all 0.3s ease;
+            z-index: 1;
+            box-shadow: 0 0 0 0 #FF5349;
+        }
+        .button:hover {
+            box-shadow: 0 0 3px 1px #FF5349;
+        }
+        .small-button {
+            background-color: #121212;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 0 0 0 #3B4CC0;
+        }
+        .small-button:hover {
+            box-shadow: 0 0 3px 1px #3B4CC0;
+        }
+        @keyframes waveEffect {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(30);
+                opacity: 0;
+            }
+        }
+        .wave {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-color: #3B4CC0;
+            border-radius: 50%;
+            animation: waveEffect 0.6s forwards;
+            pointer-events: none;
+            z-index: 2;
+        }
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1c1c1c;
+            color: white;
+            border: 0.5px solid #FF5349; /* Border set to 0.5px */
+            border-radius: 10px;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            box-shadow: 0 0 10px #FF5349;
+            animation: popIn 0.5s ease-out; /* Pop-in animation */
+            max-width: 90%; /* To avoid going beyond the screen width */
+            word-wrap: break-word; /* Ensure long text wraps correctly */
+            user-select: none; /* Prevent text selection in the notification */
+        }
+        /* Pop-in Animation */
+        @keyframes popIn {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+        .notification h3 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .notification p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .notification button {
+            background-color: #121212;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 0 0 0 #FF5349;
+            width: 100%; /* Button will stretch to match the width of the text */
+            max-width: 250px; /* Limit the maximum width of the button */
+        }
+        .notification button:hover {
+            box-shadow: 0 0 3px 1px #FF5349; /* Same hover effect as 'download v6' button */
+        }
+        /* Enable pointer events on the Ok button inside the notification */
+        .notification button {
+            pointer-events: auto;
+        }
+    </style>
+    <script>
+        function removeContent(event) {
+            // Create the wave effect at the mouse position
+            const wave = document.createElement('div');
+            wave.classList.add('wave');
+            // Set the position of the wave to the button's position
+            const button = event.target;
+            const rect = button.getBoundingClientRect();
+            wave.style.left = `${event.clientX - rect.left - 75}px`;
+            wave.style.top = `${event.clientY - rect.top - 75}px`;
+            // Append the wave to the button
+            button.appendChild(wave);
+            // Wait for the wave animation to complete before hiding the content
+            setTimeout(() => {
+                document.querySelector('.button-container').style.display = 'none';
+                document.querySelector('.sub-header').textContent = 'Key System';
+            }, 600);
+        }
+        function showNotification() {
+            // Show the notification
+            const notification = document.createElement('div');
+            notification.classList.add('notification');
+            notification.innerHTML = `
+                <h3>unsuccessful :(</h3>
+                <p>could not download helios v6</p>
+                <button onclick="hideNotification()">close notification</button>
+            `;
+            document.body.appendChild(notification);
+            notification.style.display = 'flex';
+        }
+        function hideNotification() {
+            const notification = document.querySelector('.notification');
+            if (notification) {
+                notification.style.display = 'none';
+                document.body.removeChild(notification);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="header">helios</div>
+    <div class="sub-header">roblox scripting utility</div> 
+    <div class="button-container">
+        <button class="button" onclick="showNotification()">download v6</button> 
+        <button class="small-button" onclick="removeContent(event)">get key</button>
+    </div>
+</body>
+</html>
